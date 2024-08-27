@@ -2,9 +2,11 @@
 
 ## Introduction
 
-This repository contains a demonstration of my PostgreSQL skills learned in the [Associate Data Analyst in SQL](https://www.datacamp.com/tracks/associate-data-analyst-in-sql) course from DataCamp. I use the popular Postgres sample database Pagila, which represents a DVD rental store, containing information about films, rental stores and rentals, where a customer rents a film from a store through its staff ([link to the ERD](https://github.com/dmitrijs-belovs/Data-Analysis-in-SQL/blob/main/dvdrental_ERD.pdf)). I restore it in pgAdmin4 with a downloaded [backup file](https://github.com/dmitrijs-belovs/Data-Analysis-in-SQL/blob/main/dvdrental.tar) and sequentially go over all concepts learned in the course, beginning with simple queries such as selecting the data and progressing to more advanced ones such as joining the data, case statements, subqueries and CTEs, window functions, arrays, and functions for manipulating the data. I analyze films, rentals, sales and revenue, employee and store performance, customer preferences, and inventory. I do not conduct complete data analysis on any of these topics, but choose among them for the most appropriate when practicing different concepts.
+This repository contains a demonstration of my PostgreSQL skills learned in the [Associate Data Analyst in SQL](https://www.datacamp.com/tracks/associate-data-analyst-in-sql) course from DataCamp. I use the popular Postgres sample database Pagila, which represents a DVD rental store, containing information about films, rental stores and rentals, where a customer rents a film from a store through its staff ([link to the ERD](https://github.com/dmitrijs-belovs/Data-Analysis-in-SQL/blob/main/dvdrental_ERD.pdf)). I restore it in pgAdmin4 with a downloaded [backup file](https://github.com/dmitrijs-belovs/Data-Analysis-in-SQL/blob/main/dvdrental.tar) and sequentially go over all concepts learned in the course, beginning with simple queries such as selecting data and progressing to more advanced ones such as joining data, case statements, subqueries and CTEs, window functions, arrays, and functions for manipulating data. I come up with the query objectives for demonstrating different concepts by myself using database ERD, analyzing films, rentals, sales and revenue, employee and store performance, customer preferences, and inventory. I do not conduct complete data analysis on any of these topics, but choose among them for the most appropriate when practicing different concepts. 
 
 ## Selecting Data
+
+In the first section, I demonstrate fundamental querying techniques of selecting data, such as selecting one column, multiple columns, and all columns from a table, limiting output, selecting unique values from a column, filtering based on numeric, multiple, and textual conditions, using aggregate functions, performing arithmetic with +, -, * or /, grouping and sorting, and filtering grouped data.
 
 <details>
   <summary>Click to expand SQL code</summary>
@@ -99,14 +101,18 @@ This repository contains a demonstration of my PostgreSQL skills learned in the 
 
 </details>
 
+[Link to the SQL file](https://github.com/dmitrijs-belovs/Data-Analysis-in-SQL/blob/main/Selecting%20Data.sql)
+
 ## Joining Data
+
+In the joining data section, I demonstrate various methods for joining data, including all types of SQL joins: INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL JOIN, CROSS JOIN, and SELF JOIN. I also demonstrate different vertical merging techniques, including UNION, INTERSECT, and EXCEPT.
 
 <details>
   <summary>Click to expand SQL code</summary>
   
 ```sql
 
--- Inner join
+-- INNER JOIN
 	-- Return all rented film titles and their rental count and sales
 	SELECT
 		f.title,
@@ -119,7 +125,7 @@ This repository contains a demonstration of my PostgreSQL skills learned in the 
 	GROUP BY f.title
 	ORDER BY rental_count DESC, sales DESC;
 
--- Left join
+-- LEFT JOIN
 	-- Return all film titles that are available in inventory but have never been rented
 	SELECT f.title
 	FROM film f
@@ -128,7 +134,7 @@ This repository contains a demonstration of my PostgreSQL skills learned in the 
 	WHERE rental_id IS NULL
 	ORDER BY title;
 
--- Right join
+-- RIGHT JOIN
 	-- Return all invenotries that don't have film titles
 	SELECT f.title
 	FROM film f
@@ -136,7 +142,7 @@ This repository contains a demonstration of my PostgreSQL skills learned in the 
 	WHERE f.title IS NULL
 	ORDER BY f.title;
 
--- Full join
+-- FULL JOIN
 	/* Return all film titles that are not available in inventory or have never been rented,
 	   or inventories or rentals that don't have titles */
 	SELECT
@@ -148,7 +154,7 @@ This repository contains a demonstration of my PostgreSQL skills learned in the 
 	FULL OUTER JOIN rental r USING(inventory_id)
 	WHERE f.title IS NULL OR i.inventory_id IS NULL OR r.rental_id IS NULL;
 
--- Cross join
+-- CROSS JOIN
 	-- Return all possible combinations of customer IDs and films that they have never rented
 	SELECT
 		c.customer_id,
@@ -160,7 +166,7 @@ This repository contains a demonstration of my PostgreSQL skills learned in the 
 	WHERE rental_id IS NULL
 	ORDER BY c.customer_id, f.title;
 
--- Self join
+-- SELF JOIN
 	-- Return customers who rented multiple films at the same time
 	SELECT DISTINCT
 	    r1.customer_id,
@@ -205,7 +211,7 @@ CREATE TEMP TABLE top_rented_films_in_store2 AS(
 	LIMIT 50
 );
 
--- Union
+-- UNION
 	-- Return top 50 most rented films in store 1 and 2 
 	SELECT * 
 	FROM top_rented_films_in_store1
@@ -215,7 +221,7 @@ CREATE TEMP TABLE top_rented_films_in_store2 AS(
 	SELECT * 
 	FROM top_rented_films_in_store2;
 
--- Intersect
+-- INTERSECT
 	-- Return rented films that are top 50 in both store 1 and 2
 	SELECT * 
 	FROM top_rented_films_in_store1
@@ -225,7 +231,7 @@ CREATE TEMP TABLE top_rented_films_in_store2 AS(
 	SELECT * 
 	FROM top_rented_films_in_store2;
 
--- Except
+-- EXCEPT
 	-- Return rented films that are top 50 in store 1 and not in store 2
 	SELECT * 
 	FROM top_rented_films_in_store1
@@ -239,7 +245,11 @@ CREATE TEMP TABLE top_rented_films_in_store2 AS(
 
 </details>
 
-## Data Manipulation, Subqueries and CTEs
+[Link to the SQL file](https://github.com/dmitrijs-belovs/Data-Analysis-in-SQL/blob/main/Joining%20Data.sql)
+
+## Case Statements, Subqueries and CTEs
+
+In this section, I demonstrate case statements, subqueries in different clauses, including subqueries inside SELECT, FROM, WHERE, nested subqueries, correlated subqueries and subqueries everywhere. In the end, I demonstrate CTEs.
 
 <details>
   <summary>Click to expand SQL code</summary>
@@ -530,7 +540,11 @@ CREATE TEMP TABLE top_rented_films_in_store2 AS(
 
 </details>
 
+[Link to the SQL file](https://github.com/dmitrijs-belovs/Data-Analysis-in-SQL/blob/main/Case%20Statements%2C%20Subqueries%20and%20CTEs.sql)
+
 ## Window Functions
+
+In the window functions section, I demonstrate different uses of windows functions, including fetching with LAG, LEAD, FIRST_VALUE and LAST_VALUE, ranking with ROW_NUMBER, RANK, RANK_DENSE, paging, aggregate window function and frames, pivoting, and ROLLUP and CUBE.
 
 <details>
   <summary>Click to expand SQL code</summary>
@@ -731,7 +745,11 @@ CREATE TEMP TABLE top_rented_films_in_store2 AS(
 
 </details>
 
+[Link to the SQL file](https://github.com/dmitrijs-belovs/Data-Analysis-in-SQL/blob/main/Window%20Functions.sql)
+
 ## Arrays and Functions for Manipulating Data
+
+In the last section, I demonstrate arrays, functions for manipulating data, including DATE/TIME functions and operators, and parsing and manipulating text.
 
 <details>
   <summary>Click to expand SQL code</summary>
@@ -945,3 +963,5 @@ CREATE TEMP TABLE top_rented_films_in_store2 AS(
  ```
 
 </details>
+
+[Link to the SQL file](https://github.com/dmitrijs-belovs/Data-Analysis-in-SQL/blob/main/Arrays%20and%20Functions%20for%20Manipulating%20Data.sql)
