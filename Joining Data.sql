@@ -1,4 +1,4 @@
--- Inner join
+-- INNER JOIN
 	-- Return all rented film titles and their rental count and sales
 	SELECT
 		f.title,
@@ -11,7 +11,7 @@
 	GROUP BY f.title
 	ORDER BY rental_count DESC, sales DESC;
 
--- Left join
+-- LEFT JOIN
 	-- Return all film titles that are available in inventory but have never been rented
 	SELECT f.title
 	FROM film f
@@ -20,7 +20,7 @@
 	WHERE rental_id IS NULL
 	ORDER BY title;
 
--- Right join
+-- RIGHT JOIN
 	-- Return all invenotries that don't have film titles
 	SELECT f.title
 	FROM film f
@@ -28,7 +28,7 @@
 	WHERE f.title IS NULL
 	ORDER BY f.title;
 
--- Full join
+-- FULL JOIN
 	/* Return all film titles that are not available in inventory or have never been rented,
 	   or inventories or rentals that don't have titles */
 	SELECT
@@ -40,7 +40,7 @@
 	FULL OUTER JOIN rental r USING(inventory_id)
 	WHERE f.title IS NULL OR i.inventory_id IS NULL OR r.rental_id IS NULL;
 
--- Cross join
+-- CROSS JOIN
 	-- Return all possible combinations of customer IDs and films that they have never rented
 	SELECT
 		c.customer_id,
@@ -52,7 +52,7 @@
 	WHERE rental_id IS NULL
 	ORDER BY c.customer_id, f.title;
 
--- Self join
+-- SELF JOIN
 	-- Return customers who rented multiple films at the same time
 	SELECT DISTINCT
 	    r1.customer_id,
@@ -97,7 +97,7 @@ CREATE TEMP TABLE top_rented_films_in_store2 AS(
 	LIMIT 50
 );
 
--- Union
+-- UNION
 	-- Return top 50 most rented films in store 1 and 2 
 	SELECT * 
 	FROM top_rented_films_in_store1
@@ -107,7 +107,7 @@ CREATE TEMP TABLE top_rented_films_in_store2 AS(
 	SELECT * 
 	FROM top_rented_films_in_store2;
 
--- Intersect
+-- INTERSECT
 	-- Return rented films that are top 50 in both store 1 and 2
 	SELECT * 
 	FROM top_rented_films_in_store1
@@ -117,7 +117,7 @@ CREATE TEMP TABLE top_rented_films_in_store2 AS(
 	SELECT * 
 	FROM top_rented_films_in_store2;
 
--- Except
+-- EXCEPT
 	-- Return rented films that are top 50 in store 1 and not in store 2
 	SELECT * 
 	FROM top_rented_films_in_store1
