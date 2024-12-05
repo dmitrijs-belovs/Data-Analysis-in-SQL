@@ -1,4 +1,4 @@
-# Data-Analysis-in-SQL
+# PostgreSQL-skills
 
 ## Introduction
 
